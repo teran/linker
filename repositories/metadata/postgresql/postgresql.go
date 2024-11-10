@@ -43,10 +43,6 @@ type queryRunner interface {
 	QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error)
 }
 
-type execRunner interface {
-	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
-}
-
 func selectQueryRow(ctx context.Context, db queryRunner, q sq.SelectBuilder) (sq.RowScanner, error) {
 	sql, args, err := q.ToSql()
 	if err != nil {
@@ -58,7 +54,7 @@ func selectQueryRow(ctx context.Context, db queryRunner, q sq.SelectBuilder) (sq
 		log.WithFields(log.Fields{
 			"query":    sql,
 			"args":     args,
-			"duration": time.Now().Sub(start),
+			"duration": time.Since(start),
 		}).Debug("SQL query executed")
 	}()
 
