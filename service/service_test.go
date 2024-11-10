@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/suite"
@@ -18,6 +19,7 @@ func (s *serviceTestSuite) TestRedirectNoParams() {
 	}, nil).Once()
 
 	s.statsRepoM.On("LogRequest", models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -25,6 +27,7 @@ func (s *serviceTestSuite) TestRedirectNoParams() {
 	}).Return(nil).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -44,6 +47,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParams() {
 	}, nil).Once()
 
 	s.statsRepoM.On("LogRequest", models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -51,6 +55,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParams() {
 	}).Return(nil).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -73,6 +78,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParamsAndRequestParamsNoOverri
 	}, nil).Once()
 
 	s.statsRepoM.On("LogRequest", models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -84,6 +90,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParamsAndRequestParamsNoOverri
 	}).Return(nil).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -111,6 +118,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParamsAndRequestParamsWithOver
 	}, nil).Once()
 
 	s.statsRepoM.On("LogRequest", models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -122,6 +130,7 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParamsAndRequestParamsWithOver
 	}).Return(nil).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -149,6 +158,7 @@ func (s *serviceTestSuite) TestRedirectStatsRepoErrorNoImpact() {
 	}, nil).Once()
 
 	s.statsRepoM.On("LogRequest", models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
@@ -160,6 +170,7 @@ func (s *serviceTestSuite) TestRedirectStatsRepoErrorNoImpact() {
 	}).Return(errors.New("blah")).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
+		Timestamp: time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:    "linkID",
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",

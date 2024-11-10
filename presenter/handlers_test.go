@@ -19,6 +19,7 @@ const (
 
 func (s *handlersTestSuite) TestFreshClientRedirect() {
 	s.svcM.On("Redirect", models.Request{
+		Timestamp:  time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:     "linkIDStub",
 		ClientIP:   "127.0.0.1",
 		CookieID:   "test-cookie-id",
@@ -49,6 +50,7 @@ func (s *handlersTestSuite) TestFreshClientRedirect() {
 
 func (s *handlersTestSuite) TestFreshClientRedirectNotFound() {
 	s.svcM.On("Redirect", models.Request{
+		Timestamp:  time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
 		LinkID:     "linkIDStub",
 		ClientIP:   "127.0.0.1",
 		CookieID:   "test-cookie-id",

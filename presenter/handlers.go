@@ -53,6 +53,7 @@ func (h *handlers) ProcessRedirect(c echo.Context) error {
 	}
 
 	url, err := h.cfg.URLService.Redirect(c.Request().Context(), models.Request{
+		Timestamp:  h.cfg.TimeNowProvider().UTC(),
 		LinkID:     c.Param("linkID"),
 		ClientIP:   strings.SplitN(c.Request().RemoteAddr, ":", 2)[0],
 		CookieID:   cookie.Value,
