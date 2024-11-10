@@ -38,3 +38,10 @@ checksum:
   algorithm: sha256
   split: false
   disable: false
+release:
+  prerelease: auto
+  header: |
+    ## linker {{ .Tag }} release
+
+    Date: {{ .Date }}
+
