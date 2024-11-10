@@ -48,6 +48,10 @@ func (s *serviceTestSuite) TestRedirectLinkDefaultParams() {
 		ClientIP:  "127.3.2.1",
 		CookieID:  "test-cookie-id",
 		UserAgent: "some-app/1.0",
+		Parameters: models.Parameters{
+			"param1": []string{"value1"},
+			"param2": []string{"value2", "value3"},
+		},
 	}).Return(nil).Once()
 
 	link, err := s.svc.Redirect(s.ctx, models.Request{
