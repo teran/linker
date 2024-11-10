@@ -1,0 +1,67 @@
+services:
+  postgresql:
+    image: ${IMAGE_PREFIX}index.docker.io/library/postgres:17
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  kafka:
+    image: ${IMAGE_PREFIX}index.docker.io/apache/kafka:3.8.1
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+    ports:
+      - "9092:9092"
+
+  migrator:
+    build:
+      context: .
+      dockerfile: dockerfiles/migrator.Dockerfile
+    environment:
+      LOG_LEVEL: trace
+      METADATADB_MASTER_DSN: postgres://postgres:password@postgresql?sslmode=disable
+    depends_on:
+      postgresql:
+        condition: service_healthy
+  
+  redirector:
+    build:
+      context: .
+      dockerfile: dockerfiles/redirector.Dockerfile
+    environment:
+      LOG_LEVEL: trace
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_STATS_TOPIC: requests
+      METADATADB_MASTER_DSN: postgres://postgres:password@postgresql?sslmode=disable
+      METADATADB_REPLICA_DSN: postgres://postgres:password@postgresql?sslmode=disable
+      SERVICE_DOMAIN: test-domain.example.com
+      SERVICE_COOKIE_NAME: cxid
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_started
+
+volumes:
+  database:
+  kafka:
