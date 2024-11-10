@@ -32,6 +32,10 @@ func (s *service) Redirect(ctx context.Context, req models.Request) (string, err
 		return "", mapRepositoryErrors(err)
 	}
 
+	if len(req.Parameters) == 0 {
+		req.Parameters = link.Parameters
+	}
+
 	if err := s.statsRepo.LogRequest(ctx, req); err != nil {
 		log.Warnf("error storing request into stats repository: `%s`", err)
 	}
