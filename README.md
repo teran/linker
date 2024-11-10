@@ -6,7 +6,7 @@ Status: in-development
 
 Project status:
 
-- [ ] redirection mechanism
-- [ ] request logging mechanism
-- [ ] UI
-- [ ] request processor
+* [X] redirection mechanism
+* [X] request logging mechanism
+* [ ] UI
+* [ ] request processor
