@@ -1,6 +1,9 @@
 package models
 
+import "time"
+
 type Request struct {
+	Timestamp  time.Time
 	LinkID     string
 	ClientIP   string
 	CookieID   string
