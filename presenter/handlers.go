@@ -12,11 +12,12 @@ import (
 )
 
 type Config struct {
-	Domain            string
-	CookieName        string
-	URLService        service.Service
-	CookieIDGenerator func() string
-	TimeNowProvider   func() time.Time
+	Domain             string
+	CookieName         string
+	URLService         service.Service
+	CookieIDGenerator  func() string
+	TimeNowProvider    func() time.Time
+	ClientIPHeaderName string
 }
 
 type Handlers interface {
@@ -52,10 +53,15 @@ func (h *handlers) processRedirect(c echo.Context) error {
 		c.SetCookie(cookie)
 	}
 
+	clientIP := strings.SplitN(c.Request().RemoteAddr, ":", 2)[0]
+	if h.cfg.ClientIPHeaderName != "" {
+		clientIP = c.Request().Header.Get(h.cfg.ClientIPHeaderName)
+	}
+
 	url, err := h.cfg.URLService.Redirect(c.Request().Context(), models.Request{
 		Timestamp:  h.cfg.TimeNowProvider().UTC(),
 		LinkID:     c.Param("linkID"),
-		ClientIP:   strings.SplitN(c.Request().RemoteAddr, ":", 2)[0],
+		ClientIP:   clientIP,
 		CookieID:   cookie.Value,
 		UserAgent:  c.Request().UserAgent(),
 		Parameters: models.Parameters(c.Request().URL.Query()),
