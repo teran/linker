@@ -20,7 +20,7 @@ type Config struct {
 }
 
 type Handlers interface {
-	ProcessRedirect(echo.Context) error
+	processRedirect(echo.Context) error
 
 	Register(e *echo.Echo)
 }
@@ -35,7 +35,7 @@ func New(cfg *Config) Handlers {
 	}
 }
 
-func (h *handlers) ProcessRedirect(c echo.Context) error {
+func (h *handlers) processRedirect(c echo.Context) error {
 	cookie, err := c.Cookie(h.cfg.CookieName)
 	if err != nil {
 		cookie = &http.Cookie{
@@ -71,6 +71,11 @@ func (h *handlers) ProcessRedirect(c echo.Context) error {
 	return c.Redirect(http.StatusFound, url)
 }
 
+func (h *handlers) robotsTxt(c echo.Context) error {
+	return c.Blob(http.StatusOK, "text/plain", []byte("User-agent: *\nDisallow: /\n"))
+}
+
 func (h *handlers) Register(e *echo.Echo) {
-	e.GET("/:linkID", h.ProcessRedirect)
+	e.GET("/robots.txt", h.robotsTxt)
+	e.GET("/:linkID", h.processRedirect)
 }
