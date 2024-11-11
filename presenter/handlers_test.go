@@ -98,19 +98,49 @@ func (s *handlersTestSuite) TestRobotsTxt() {
 	s.Require().Equal("User-agent: *\nDisallow: /\n", string(payload))
 }
 
+func (s *handlersTestSuite) TestClientIPHeader() {
+	s.handlers.(*handlers).cfg.ClientIPHeaderName = "X-Test-Header"
+
+	s.svcM.On("Redirect", models.Request{
+		Timestamp:  time.Date(2024, 11, 9, 1, 2, 3, 4, time.UTC),
+		LinkID:     "linkIDStub",
+		ClientIP:   "3.2.1.1",
+		CookieID:   "test-cookie-id",
+		UserAgent:  "test-client/1.0",
+		Parameters: map[string][]string{},
+	}).Return("", service.ErrNotFound).Once()
+
+	req, err := http.NewRequest(http.MethodGet, s.srv.URL+"/linkIDStub", nil)
+	s.Require().NoError(err)
+
+	req.Header.Set("User-Agent", "test-client/1.0")
+	req.Header.Set("X-Test-Header", "3.2.1.1")
+
+	c := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+	resp, err := c.Do(req)
+	s.Require().NoError(err)
+
+	s.Require().Equal(http.StatusNotFound, resp.StatusCode)
+}
+
 // Definitions ...
 
 type handlersTestSuite struct {
 	suite.Suite
 
-	srv  *httptest.Server
-	svcM *service.Mock
+	srv      *httptest.Server
+	svcM     *service.Mock
+	handlers Handlers
 }
 
 func (s *handlersTestSuite) SetupTest() {
 	s.svcM = service.NewMock()
 
-	hndlr := New(&Config{
+	s.handlers = New(&Config{
 		Domain:            testDomain,
 		CookieName:        testCookieName,
 		URLService:        s.svcM,
@@ -119,7 +149,7 @@ func (s *handlersTestSuite) SetupTest() {
 	})
 
 	e := echo.New()
-	hndlr.Register(e)
+	s.handlers.Register(e)
 
 	s.srv = httptest.NewServer(e)
 }
