@@ -40,8 +40,9 @@ type config struct {
 
 	LogLevel log.Level `envconfig:"LOG_LEVEL" default:"info"`
 
-	Domain     string `envconfig:"SERVICE_DOMAIN" required:"true"`
-	CookieName string `envconfig:"SERVICE_COOKIE_NAME" required:"true"`
+	Domain             string `envconfig:"SERVICE_DOMAIN" required:"true"`
+	CookieName         string `envconfig:"SERVICE_COOKIE_NAME" required:"true"`
+	ClientIPHeaderName string `envconfig:"CLIENT_IP_HEADER_NAME"`
 }
 
 func main() {
@@ -95,6 +96,7 @@ func main() {
 		TimeNowProvider: func() time.Time {
 			return time.Now()
 		},
+		ClientIPHeaderName: cfg.ClientIPHeaderName,
 	})
 
 	e := echo.New()
