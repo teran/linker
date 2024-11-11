@@ -1,6 +1,7 @@
 package presenter
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -72,6 +73,29 @@ func (s *handlersTestSuite) TestFreshClientRedirectNotFound() {
 	s.Require().NoError(err)
 
 	s.Require().Equal(http.StatusNotFound, resp.StatusCode)
+}
+
+func (s *handlersTestSuite) TestRobotsTxt() {
+	req, err := http.NewRequest(http.MethodGet, s.srv.URL+"/robots.txt", nil)
+	s.Require().NoError(err)
+
+	req.Header.Set("User-Agent", "test-client/1.0")
+
+	c := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+	resp, err := c.Do(req)
+	s.Require().NoError(err)
+
+	defer resp.Body.Close()
+
+	payload, err := io.ReadAll(resp.Body)
+	s.Require().NoError(err)
+
+	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Require().Equal("User-agent: *\nDisallow: /\n", string(payload))
 }
 
 // Definitions ...
