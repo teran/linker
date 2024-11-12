@@ -17,10 +17,10 @@ import (
 	"github.com/teran/go-random"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/teran/linker/presenter"
+	"github.com/teran/linker/redirector/presenter"
+	"github.com/teran/linker/redirector/service"
 	mdRepoPostgres "github.com/teran/linker/repositories/metadata/postgresql"
 	statsRepoKafka "github.com/teran/linker/repositories/stats/kafka"
-	"github.com/teran/linker/service"
 )
 
 var (

@@ -8,7 +8,7 @@ import (
 	echo "github.com/labstack/echo/v4"
 
 	"github.com/teran/linker/models"
-	"github.com/teran/linker/service"
+	"github.com/teran/linker/redirector/service"
 )
 
 type Config struct {

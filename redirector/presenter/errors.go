@@ -5,7 +5,7 @@ import (
 
 	echo "github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
-	"github.com/teran/linker/service"
+	"github.com/teran/linker/redirector/service"
 )
 
 func mapServiceErrors(c echo.Context, err error) error {
