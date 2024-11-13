@@ -142,6 +142,12 @@ func main() {
 	me.Use(middleware.Recover())
 
 	checkFn := func() error {
+		if len(cfg.MemcacheServers) > 0 {
+			if err := cli.Ping(); err != nil {
+				return err
+			}
+		}
+
 		if err := dbMaster.Ping(); err != nil {
 			return err
 		}
