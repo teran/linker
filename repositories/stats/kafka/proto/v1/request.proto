@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package repositories.stats.kafka.proto.v1;
+
+option go_package = "github.com/teran/linker/repositories/stats/kafka/proto/v1";
+
+message Parameter {
+  repeated string value = 1;
+}
+
+message Request {
+  uint32 timestamp = 1;
+  string link_id = 2;
+  string client_ip = 3;
+  string cookie_id = 4;
+  string user_agent = 5;
+  map<string, Parameter> parameters = 6;
+}
