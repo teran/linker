@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
+	memcacheCli "github.com/bradfitz/gomemcache/memcache"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/labstack/echo-contrib/echoprometheus"
 	echo "github.com/labstack/echo/v4"
@@ -19,6 +20,7 @@ import (
 
 	"github.com/teran/linker/redirector/presenter"
 	"github.com/teran/linker/redirector/service"
+	"github.com/teran/linker/repositories/cache/metadata/memcache"
 	mdRepoPostgres "github.com/teran/linker/repositories/metadata/postgresql"
 	statsRepoKafka "github.com/teran/linker/repositories/stats/kafka"
 )
@@ -34,6 +36,9 @@ type config struct {
 
 	KafkaBrokers    []string `envconfig:"KAFKA_BROKERS" required:"true"`
 	KafkaStatsTopic string   `envconfig:"KAFKA_STATS_TOPIC" required:"true"`
+
+	MemcacheServers []string      `envconfig:"MEMCACHE_SERVERS"`
+	MemcacheTTL     time.Duration `envconfig:"MEMCACHE_TTL" default:"60m"`
 
 	MetadataDBMasterDSN  string `envconfig:"METADATADB_MASTER_DSN" required:"true"`
 	MetadataDBReplicaDSN string `envconfig:"METADATADB_REPLICA_DSN" required:"true"`
@@ -71,6 +76,21 @@ func main() {
 	}
 
 	mdRepo := mdRepoPostgres.New(dbMaster, dbReplica)
+
+	var cli *memcacheCli.Client
+	if len(cfg.MemcacheServers) > 0 {
+		log.Debugf(
+			"%d memcache servers specified for metadata caching. Initializing read-through cache ...",
+			len(cfg.MemcacheServers),
+		)
+
+		cli = memcacheCli.New(cfg.MemcacheServers...)
+		if err := cli.Ping(); err != nil {
+			panic(err)
+		}
+
+		mdRepo = memcache.New(cli, mdRepo, cfg.MemcacheTTL)
+	}
 
 	kcfg := newProducerConfig()
 	producer, err := sarama.NewSyncProducer(cfg.KafkaBrokers, kcfg)

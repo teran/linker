@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package repositories.cache.metadata.memcache.proto.v1;
+
+option go_package = "github.com/teran/linker/repositories/cache/metadata/memcache/proto/v1";
+
+message Parameter {
+  repeated string value = 1;
+}
+
+message Link {
+  string destination_url = 1;
+  map<string, Parameter> parameters = 2;
+  bool allow_parameters_override = 3;
+}
