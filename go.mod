@@ -18,7 +18,7 @@ require (
 	github.com/teran/go-docker-testsuite v1.0.1
 	github.com/teran/go-random v0.0.1
 	golang.org/x/sync v0.9.0
-	google.golang.org/protobuf v1.35.1
+	google.golang.org/protobuf v1.35.2
 )
 
 require (
