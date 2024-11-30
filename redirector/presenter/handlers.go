@@ -65,6 +65,7 @@ func (h *handlers) processRedirect(c echo.Context) error {
 		CookieID:   cookie.Value,
 		UserAgent:  c.Request().UserAgent(),
 		Parameters: models.Parameters(c.Request().URL.Query()),
+		Referrer:   c.Request().Referer(),
 	})
 	if err != nil {
 		return mapServiceErrors(c, err)

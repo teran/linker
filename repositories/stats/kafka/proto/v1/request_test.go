@@ -21,6 +21,7 @@ func TestRequestMapping(t *testing.T) {
 			"key1": []string{"value1"},
 			"key2": []string{"value2"},
 		},
+		Referrer: "test-referrer",
 	}
 
 	pr, err := NewRequest(req)

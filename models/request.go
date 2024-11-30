@@ -9,4 +9,5 @@ type Request struct {
 	CookieID   string
 	UserAgent  string
 	Parameters Parameters
+	Referrer   string
 }

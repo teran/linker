@@ -15,4 +15,5 @@ message Request {
   string cookie_id = 4;
   string user_agent = 5;
   map<string, Parameter> parameters = 6;
+  string referrer = 7;
 }
