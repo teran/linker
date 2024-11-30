@@ -19,6 +19,7 @@ func NewRequest(r models.Request) (*Request, error) {
 		CookieId:   r.CookieID,
 		UserAgent:  r.UserAgent,
 		Parameters: parameters,
+		Referrer:   r.Referrer,
 	}, nil
 }
 
@@ -30,10 +31,11 @@ func (r *Request) ToSvc() (models.Request, error) {
 
 	return models.Request{
 		Timestamp:  time.Unix(int64(r.Timestamp), 0).UTC(),
-		LinkID:     r.LinkId,
-		ClientIP:   r.ClientIp,
-		CookieID:   r.CookieId,
-		UserAgent:  r.UserAgent,
+		LinkID:     r.GetLinkId(),
+		ClientIP:   r.GetClientIp(),
+		CookieID:   r.GetCookieId(),
+		UserAgent:  r.GetUserAgent(),
 		Parameters: parameters,
+		Referrer:   r.GetReferrer(),
 	}, nil
 }

@@ -108,6 +108,7 @@ func (s *handlersTestSuite) TestClientIPHeader() {
 		CookieID:   "test-cookie-id",
 		UserAgent:  "test-client/1.0",
 		Parameters: map[string][]string{},
+		Referrer:   "test-referrer",
 	}).Return("", service.ErrNotFound).Once()
 
 	req, err := http.NewRequest(http.MethodGet, s.srv.URL+"/linkIDStub", nil)
@@ -115,6 +116,7 @@ func (s *handlersTestSuite) TestClientIPHeader() {
 
 	req.Header.Set("User-Agent", "test-client/1.0")
 	req.Header.Set("X-Test-Header", "3.2.1.1")
+	req.Header.Set("Referer", "test-referrer")
 
 	c := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
