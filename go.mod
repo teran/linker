@@ -9,7 +9,7 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo-contrib v0.17.1
-	github.com/labstack/echo/v4 v4.12.0
+	github.com/labstack/echo/v4 v4.13.0
 	github.com/lib/pq v1.10.9
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
@@ -38,7 +38,6 @@ require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.23.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
