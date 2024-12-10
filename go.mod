@@ -14,7 +14,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.10.0
-	github.com/teran/appmetrics v0.0.1
+	github.com/teran/appmetrics v0.1.0
 	github.com/teran/go-docker-testsuite v1.0.1
 	github.com/teran/go-random v0.0.1
 	golang.org/x/sync v0.10.0
