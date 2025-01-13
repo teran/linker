@@ -3,7 +3,7 @@ module github.com/teran/linker
 go 1.23.3
 
 require (
-	github.com/IBM/sarama v1.44.0
+	github.com/IBM/sarama v1.45.0
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/bradfitz/gomemcache v0.0.0-20230905024940-24af94b03874
 	github.com/golang-migrate/migrate/v4 v4.18.1
@@ -83,9 +83,9 @@ require (
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/crypto v0.32.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241021214115-324edc3d5d38 // indirect
