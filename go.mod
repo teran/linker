@@ -19,7 +19,7 @@ require (
 	github.com/teran/appmetrics v0.1.1
 	github.com/teran/go-docker-testsuite v1.0.2
 	github.com/teran/go-random v0.0.1
-	golang.org/x/sync v0.12.0
+	golang.org/x/sync v0.13.0
 	google.golang.org/protobuf v1.36.6
 )
 
